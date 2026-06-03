@@ -104,7 +104,11 @@ private fun RecipeCard(recipe: RecipeEntity, onClick: () -> Unit, onDelete: () -
         ) {
             Column(Modifier.weight(1f)) {
                 Text(recipe.name, fontWeight = FontWeight.SemiBold, color = OnBackground)
-                Text("${recipe.servings} serving${if (recipe.servings != 1) "s" else ""}", fontSize = 12.sp, color = OnSurfaceMuted)
+                Text(
+                    "${recipe.servings} serving${if (recipe.servings != 1) "s" else ""}",
+                    fontSize = 12.sp,
+                    color = OnSurfaceMuted
+                )
             }
             IconButton(onClick = onDelete) {
                 Icon(Icons.Default.Delete, null, tint = OnSurfaceMuted, modifier = Modifier.size(18.dp))
@@ -212,8 +216,9 @@ fun RecipeEditScreen(
                     Text("Add Ingredient", fontWeight = FontWeight.Bold, color = OnBackground)
                     Spacer(Modifier.height(8.dp))
 
-                    if (state.pendingFood != null) {
-                        Text(state.pendingFood.name, color = OnBackground, fontWeight = FontWeight.Medium)
+                    val pendingFood: FoodEntity? = state.pendingFood
+                    if (pendingFood != null) {
+                        Text(pendingFood.name, color = OnBackground, fontWeight = FontWeight.Medium)
                         Spacer(Modifier.height(8.dp))
                         PbTextField(
                             value = state.pendingGrams,
@@ -224,8 +229,16 @@ fun RecipeEditScreen(
                         )
                         Spacer(Modifier.height(8.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            OutlinedLimeButton("Cancel", onClick = { viewModel.cancelPendingFood() }, modifier = Modifier.weight(1f))
-                            LimeButton("Add", onClick = { viewModel.addPendingIngredient() }, modifier = Modifier.weight(1f))
+                            OutlinedLimeButton(
+                                "Cancel",
+                                onClick = { viewModel.cancelPendingFood() },
+                                modifier = Modifier.weight(1f)
+                            )
+                            LimeButton(
+                                "Add",
+                                onClick = { viewModel.addPendingIngredient() },
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                     } else {
                         PbTextField(
@@ -261,7 +274,8 @@ private fun IngredientRow(ing: RecipeIngredientDetail, onRemove: () -> Unit) {
             )
             Text(
                 "${ing.grams.toInt()}g · ${macros.calories.toInt()} kcal · P:${macros.protein.toInt()}g",
-                fontSize = 12.sp, color = OnSurfaceMuted
+                fontSize = 12.sp,
+                color = OnSurfaceMuted
             )
         }
         IconButton(onClick = onRemove, modifier = Modifier.size(32.dp)) {

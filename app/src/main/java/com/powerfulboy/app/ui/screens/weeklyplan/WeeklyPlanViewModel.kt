@@ -2,6 +2,7 @@ package com.powerfulboy.app.ui.screens.weeklyplan
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.powerfulboy.app.data.dao.ShoppingItem
 import com.powerfulboy.app.data.entity.RecipeEntity
 import com.powerfulboy.app.data.entity.WeeklyPlanEntity
 import com.powerfulboy.app.data.repository.RecipeRepository
@@ -51,7 +52,7 @@ class WeeklyPlanViewModel @Inject constructor(
     }
 
     fun assignRecipe(dayIndex: Int, mealType: MealType, recipe: RecipeEntity?) {
-        val weekStart = _weekStart.value
+        val weekStart: String = _weekStart.value
         viewModelScope.launch {
             if (recipe == null) {
                 weeklyPlanRepository.clearSlot(weekStart, dayIndex, mealType.name)
@@ -69,12 +70,13 @@ class WeeklyPlanViewModel @Inject constructor(
         }
     }
 
-    fun getShoppingList(onResult: (List<com.powerfulboy.app.data.dao.ShoppingItem>) -> Unit) {
+    fun getShoppingList(onResult: (List<ShoppingItem>) -> Unit) {
+        val weekStart: String = _weekStart.value
         viewModelScope.launch {
-            val list = weeklyPlanRepository.getShoppingList(_weekStart.value)
+            val list: List<ShoppingItem> = weeklyPlanRepository.getShoppingList(weekStart)
             onResult(list)
         }
     }
 
-    val currentWeekStart get() = _weekStart.value
+    val currentWeekStart: String get() = _weekStart.value
 }
