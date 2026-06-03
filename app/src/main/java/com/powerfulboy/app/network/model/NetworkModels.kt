@@ -24,7 +24,7 @@ data class OFFNutriments(
 
 // ─── Anthropic ────────────────────────────────────────────────────────────────
 data class AnthropicRequest(
-    val model: String = "claude-haiku-3-5-20241022",
+    val model: String = "claude-haiku-4-5-20251001",
     val max_tokens: Int = 600,
     val system: String,
     val messages: List<AnthropicMessage>
