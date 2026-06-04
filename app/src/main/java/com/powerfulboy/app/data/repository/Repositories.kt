@@ -162,7 +162,13 @@ class AiRepository @Inject constructor(
             val text = response.content.firstOrNull { it.type == "text" }?.text
                 ?: return Result.failure(Exception("Empty response"))
 
-            val parsed = gson.fromJson(text, AiSuggestionsWrapper::class.java)
+            val clean = text.trim()
+                .removePrefix("```json")
+                .removePrefix("```")
+                .removeSuffix("```")
+                .trim()
+
+            val parsed = gson.fromJson(clean, AiSuggestionsWrapper::class.java)
             val suggestions = parsed.suggestions.map { s ->
                 MealSuggestion(
                     name = s.name,
